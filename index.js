@@ -1,11 +1,10 @@
 var { Socket } = require("phoenix-channels");
 
-let lSocket = new Socket("ws://2aca211e.ngrok.io/socket");
+let lSocket = new Socket("ws://a3ssvc01.veritracks.com:4001/socket");
+
 lSocket.connect();
 
-console.log(lSocket);
-
-let lChannel = lSocket.channel("pursuit_mode_test",{});
+let lChannel = lSocket.channel("pursuit_mode_enrollee:21422", {});
 
 lChannel.join()
 	.receive("ok", (message) => console.log("connected", message))
