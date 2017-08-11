@@ -1,15 +1,25 @@
-var { Socket } = require("phoenix-channels");
+const { Socket } = require("phoenix-channels");
 
-let lSocket = new Socket("ws://a3ssvc01.veritracks.com:4001/socket");
+function socketConnect() {
+  const socket = new Socket("ws://192.168.99.100:4445/socket");
 
-lSocket.connect();
+  return new Promise(resolve => {
+    socket.connect();
 
-let lChannel = lSocket.channel("pursuit_mode_enrollee:21422", {});
+    let key = 21452;
 
-lChannel.join()
-	.receive("ok", (message) => console.log("connected", message))
-	.receive("error", ({reason}) => console.log("failed", reason))
-	.receive("timeout", err => console.log("timeout",err));
+    const channel = socket.channel(`pursuit_mode_enrollee:${key}`)
 
-lChannel.on("new_msg", msg => console.log("Got message", msg));
-lChannel.on("change", msg => console.log("msg ", msg));
+		if(channel.state != 'joined') {
+	    channel.join().receive('ok', (msg) => {
+	        resolve(channel);
+	    });
+		}
+  })
+}
+
+let channel = socketConnect().then((chan) => {
+	chan.on("change", (msg) => {
+		console.log("msg ", msg)
+	})
+})
