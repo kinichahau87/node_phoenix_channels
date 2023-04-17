@@ -1,7 +1,7 @@
 const { Socket } = require("phoenix-channels");
 
 function socketConnect() {
-  const socket = new Socket("ws://a3ssvc01.veritracks.com:4001/socket");
+  const socket = new Socket("ws://example.com:4001/socket");
 
   return new Promise(resolve => {
     socket.connect();
